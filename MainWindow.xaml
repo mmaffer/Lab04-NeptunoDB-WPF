@@ -1,0 +1,55 @@
+<Window x:Class="WpfApp1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:WpfApp1.ViewModels"
+        xmlns:views="clr-namespace:WpfApp1.Views"
+        mc:Ignorable="d"
+        Title="Laboratorio 04 - NeptunoDB (WPF + MVVM + ADO.NET)"
+        Height="650" Width="1050"
+        WindowStartupLocation="CenterScreen">
+
+    <!-- Relación ViewModel -> UserControl.
+         Cuando CurrentViewModel sea, por ejemplo, un ProductosViewModel,
+         WPF mostrará automáticamente el ProductosView correspondiente. -->
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:ProductosViewModel}">
+            <views:ProductosView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:CategoriasViewModel}">
+            <views:CategoriasView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ProveedoresViewModel}">
+            <views:ProveedoresView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:PedidosViewModel}">
+            <views:PedidosView />
+        </DataTemplate>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="180" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Menú lateral: cada botón navega a una pantalla usando el mismo comando.
+             El CommandParameter indica a cuál. -->
+        <StackPanel Grid.Column="0">
+            <TextBlock Text="Menú" FontSize="16" FontWeight="Bold" Margin="12" />
+            <Button Content="Productos"   Margin="8,4" Padding="6"
+                    Command="{Binding NavegarCommand}" CommandParameter="Productos" />
+            <Button Content="Categorías"  Margin="8,4" Padding="6"
+                    Command="{Binding NavegarCommand}" CommandParameter="Categorias" />
+            <Button Content="Proveedores" Margin="8,4" Padding="6"
+                    Command="{Binding NavegarCommand}" CommandParameter="Proveedores" />
+            <Button Content="Pedidos"     Margin="8,4" Padding="6"
+                    Command="{Binding NavegarCommand}" CommandParameter="Pedidos" />
+        </StackPanel>
+
+        <!-- Zona central: muestra el UserControl de la pantalla activa.
+             No se abren ventanas nuevas: sólo cambia este contenido. -->
+        <ContentControl Grid.Column="1" Content="{Binding CurrentViewModel}" Margin="8" />
+    </Grid>
+</Window>

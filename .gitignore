@@ -1,0 +1,70 @@
+## .gitignore estándar de Visual Studio para proyectos .NET / C#
+## Excluye artefactos de compilación y archivos locales del IDE.
+
+# Carpetas de salida de compilación
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+[Ll]og/
+[Ll]ogs/
+
+# Carpeta de configuración local de Visual Studio
+.vs/
+
+# Resultados de pruebas
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+TestResults/
+
+# Archivos de usuario / específicos de la máquina
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# Restauración de paquetes NuGet
+packages/
+*.nupkg
+*.snupkg
+.nuget/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Archivos de compilación de MSBuild
+*.binlog
+*.tlog
+
+# Archivos varios generados por Visual Studio / SQL / publicación
+*.dbmdl
+*.dbproj.schemaview
+*.jfm
+*.publishsettings
+orleans.codegen.cs
+*.publishproj
+PublishScripts/
+*.azurePubxml
+*.pubxml
+*.pubxml.user
+
+# Caché / índices de ReSharper, Rider, etc.
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+.idea/
+
+# Archivos temporales del sistema operativo
+*.swp
+*~
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+
+# Volcados de memoria y símbolos
+*.pdb.original
+*.mdf
+*.ldf
+*.ndf

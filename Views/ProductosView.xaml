@@ -1,0 +1,99 @@
+<UserControl x:Class="WpfApp1.Views.ProductosView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="560" d:DesignWidth="820">
+
+    <Grid Margin="6">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />  <!-- título -->
+            <RowDefinition Height="Auto" />  <!-- barra de botones -->
+            <RowDefinition Height="*" />     <!-- grilla + formulario -->
+            <RowDefinition Height="Auto" />  <!-- barra de estado -->
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Mantenimiento de Productos"
+                   FontSize="18" FontWeight="Bold" Margin="0,0,0,8" />
+
+        <!-- Botones: cada uno enlaza a un comando del ProductosViewModel -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,8">
+            <Button Content="Nuevo"     Command="{Binding NuevoCommand}"     Padding="10,4" Margin="0,0,6,0" />
+            <Button Content="Guardar"   Command="{Binding GuardarCommand}"   Padding="10,4" Margin="0,0,6,0" />
+            <Button Content="Eliminar"  Command="{Binding EliminarCommand}"  Padding="10,4" Margin="0,0,6,0" />
+            <Button Content="Refrescar" Command="{Binding RefrescarCommand}" Padding="10,4" />
+        </StackPanel>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="340" />
+            </Grid.ColumnDefinitions>
+
+            <!-- ===== Grilla de productos ===== -->
+            <DataGrid Grid.Column="0"
+                      ItemsSource="{Binding Productos}"
+                      SelectedItem="{Binding ProductoSeleccionado}"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      SelectionMode="Single"
+                      Margin="0,0,8,0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID"        Binding="{Binding ProductoID}"           Width="45" />
+                    <DataGridTextColumn Header="Nombre"    Binding="{Binding NombreProducto}"       Width="*" />
+                    <DataGridTextColumn Header="Cat."      Binding="{Binding CategoriaID}"          Width="45" />
+                    <DataGridTextColumn Header="Prov."     Binding="{Binding ProveedorID}"          Width="50" />
+                    <DataGridTextColumn Header="Precio"    Binding="{Binding PrecioUnidad, StringFormat=N2}" Width="70" />
+                    <DataGridTextColumn Header="Stock"     Binding="{Binding UnidadesEnExistencia}" Width="55" />
+                    <DataGridCheckBoxColumn Header="Desc."  Binding="{Binding Descontinuado}"        Width="50" />
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <!-- ===== Formulario (enlazado a Edicion) ===== -->
+            <Border Grid.Column="1" BorderBrush="#CCC" BorderThickness="1" Padding="10">
+                <StackPanel>
+                    <TextBlock Text="Datos del producto" FontWeight="Bold" Margin="0,0,0,8" />
+
+                    <TextBlock Text="Nombre *" />
+                    <TextBox Text="{Binding Edicion.NombreProducto, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <TextBlock Text="Categoría" Margin="0,6,0,0" />
+                    <ComboBox ItemsSource="{Binding Categorias}"
+                              DisplayMemberPath="NombreCategoria"
+                              SelectedValuePath="CategoriaID"
+                              SelectedValue="{Binding Edicion.CategoriaID}" />
+
+                    <TextBlock Text="Proveedor" Margin="0,6,0,0" />
+                    <ComboBox ItemsSource="{Binding Proveedores}"
+                              DisplayMemberPath="CompaniaNombre"
+                              SelectedValuePath="ProveedorID"
+                              SelectedValue="{Binding Edicion.ProveedorID}" />
+
+                    <TextBlock Text="Cantidad por unidad" Margin="0,6,0,0" />
+                    <TextBox Text="{Binding Edicion.CantidadPorUnidad, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <TextBlock Text="Precio unitario *" Margin="0,6,0,0" />
+                    <TextBox Text="{Binding Edicion.PrecioUnidad, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <TextBlock Text="Unidades en existencia" Margin="0,6,0,0" />
+                    <TextBox Text="{Binding Edicion.UnidadesEnExistencia, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <TextBlock Text="Unidades en pedido" Margin="0,6,0,0" />
+                    <TextBox Text="{Binding Edicion.UnidadesEnPedido, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <TextBlock Text="Nivel de reorden" Margin="0,6,0,0" />
+                    <TextBox Text="{Binding Edicion.NivelDeReorden, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <CheckBox Content="Descontinuado" Margin="0,8,0,0"
+                              IsChecked="{Binding Edicion.Descontinuado}" />
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- ===== Barra de estado: mensajes de éxito y de error ===== -->
+        <Border Grid.Row="3" Background="#EEE" Padding="6" Margin="0,8,0,0">
+            <TextBlock Text="{Binding MensajeEstado}" TextWrapping="Wrap" />
+        </Border>
+    </Grid>
+</UserControl>

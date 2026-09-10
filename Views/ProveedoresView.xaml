@@ -1,0 +1,104 @@
+<UserControl x:Class="WpfApp1.Views.ProveedoresView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="560" d:DesignWidth="860">
+
+    <Grid Margin="6">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />  <!-- panel de búsqueda -->
+            <RowDefinition Height="Auto" />  <!-- botones CRUD -->
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Mantenimiento de Proveedores"
+                   FontSize="18" FontWeight="Bold" Margin="0,0,0,8" />
+
+        <!-- ===== Panel de búsqueda ===== -->
+        <Border Grid.Row="1" BorderBrush="#CCC" BorderThickness="1" Padding="8" Margin="0,0,0,8">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Nombre de contacto:" VerticalAlignment="Center" Margin="0,0,4,0" />
+                <TextBox Width="150" Margin="0,0,12,0"
+                         Text="{Binding FiltroContacto, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBlock Text="Ciudad:" VerticalAlignment="Center" Margin="0,0,4,0" />
+                <TextBox Width="150" Margin="0,0,12,0"
+                         Text="{Binding FiltroCiudad, UpdateSourceTrigger=PropertyChanged}" />
+
+                <Button Content="Buscar" Command="{Binding BuscarCommand}" Padding="10,4" />
+            </StackPanel>
+        </Border>
+
+        <!-- ===== Botones CRUD ===== -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,8">
+            <Button Content="Nuevo"     Command="{Binding NuevoCommand}"     Padding="10,4" Margin="0,0,6,0" />
+            <Button Content="Guardar"   Command="{Binding GuardarCommand}"   Padding="10,4" Margin="0,0,6,0" />
+            <Button Content="Eliminar"  Command="{Binding EliminarCommand}"  Padding="10,4" />
+        </StackPanel>
+
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="330" />
+            </Grid.ColumnDefinitions>
+
+            <DataGrid Grid.Column="0"
+                      ItemsSource="{Binding Proveedores}"
+                      SelectedItem="{Binding Seleccionado}"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      SelectionMode="Single"
+                      Margin="0,0,8,0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID"        Binding="{Binding ProveedorID}"    Width="45" />
+                    <DataGridTextColumn Header="Compañía"  Binding="{Binding CompaniaNombre}" Width="*" />
+                    <DataGridTextColumn Header="Contacto"  Binding="{Binding NombreContacto}" Width="130" />
+                    <DataGridTextColumn Header="Ciudad"    Binding="{Binding Ciudad}"         Width="100" />
+                    <DataGridTextColumn Header="País"      Binding="{Binding Pais}"           Width="90" />
+                    <DataGridTextColumn Header="Teléfono"  Binding="{Binding Telefono}"       Width="100" />
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <Border Grid.Column="1" BorderBrush="#CCC" BorderThickness="1" Padding="10">
+                <StackPanel>
+                    <TextBlock Text="Datos del proveedor" FontWeight="Bold" Margin="0,0,0,8" />
+
+                    <TextBlock Text="Compañía *" />
+                    <TextBox Text="{Binding Edicion.CompaniaNombre, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <TextBlock Text="Nombre de contacto" Margin="0,6,0,0" />
+                    <TextBox Text="{Binding Edicion.NombreContacto, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <TextBlock Text="Cargo del contacto" Margin="0,6,0,0" />
+                    <TextBox Text="{Binding Edicion.CargoContacto, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <TextBlock Text="Dirección" Margin="0,6,0,0" />
+                    <TextBox Text="{Binding Edicion.Direccion, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <TextBlock Text="Ciudad" Margin="0,6,0,0" />
+                    <TextBox Text="{Binding Edicion.Ciudad, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <TextBlock Text="Código postal" Margin="0,6,0,0" />
+                    <TextBox Text="{Binding Edicion.CodigoPostal, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <TextBlock Text="País" Margin="0,6,0,0" />
+                    <TextBox Text="{Binding Edicion.Pais, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <TextBlock Text="Teléfono" Margin="0,6,0,0" />
+                    <TextBox Text="{Binding Edicion.Telefono, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <TextBlock Text="Fax" Margin="0,6,0,0" />
+                    <TextBox Text="{Binding Edicion.Fax, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <Border Grid.Row="4" Background="#EEE" Padding="6" Margin="0,8,0,0">
+            <TextBlock Text="{Binding MensajeEstado}" TextWrapping="Wrap" />
+        </Border>
+    </Grid>
+</UserControl>

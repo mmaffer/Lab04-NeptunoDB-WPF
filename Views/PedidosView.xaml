@@ -1,0 +1,134 @@
+<UserControl x:Class="WpfApp1.Views.PedidosView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="640" d:DesignWidth="900">
+
+    <!-- ScrollViewer para que quepa todo (formulario + reporte) en pantallas chicas -->
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="6">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />  <!-- grilla + formulario -->
+                <RowDefinition Height="Auto" />  <!-- estado CRUD -->
+                <RowDefinition Height="Auto" />  <!-- reporte -->
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Text="Mantenimiento de Pedidos"
+                       FontSize="18" FontWeight="Bold" Margin="0,0,0,8" />
+
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,8">
+                <Button Content="Nuevo"     Command="{Binding NuevoCommand}"     Padding="10,4" Margin="0,0,6,0" />
+                <Button Content="Guardar"   Command="{Binding GuardarCommand}"   Padding="10,4" Margin="0,0,6,0" />
+                <Button Content="Eliminar"  Command="{Binding EliminarCommand}"  Padding="10,4" Margin="0,0,6,0" />
+                <Button Content="Refrescar" Command="{Binding RefrescarCommand}" Padding="10,4" />
+            </StackPanel>
+
+            <Grid Grid.Row="2" Height="320">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="330" />
+                </Grid.ColumnDefinitions>
+
+                <DataGrid Grid.Column="0"
+                          ItemsSource="{Binding Pedidos}"
+                          SelectedItem="{Binding Seleccionado}"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          SelectionMode="Single"
+                          Margin="0,0,8,0">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID"          Binding="{Binding PedidoID}" Width="45" />
+                        <DataGridTextColumn Header="Cliente"     Binding="{Binding ClienteID}" Width="55" />
+                        <DataGridTextColumn Header="Empleado"    Binding="{Binding EmpleadoID}" Width="65" />
+                        <DataGridTextColumn Header="F. Pedido"   Binding="{Binding FechaPedido, StringFormat=d}" Width="90" />
+                        <DataGridTextColumn Header="F. Envío"    Binding="{Binding FechaEnvio, StringFormat=d}" Width="90" />
+                        <DataGridTextColumn Header="Destinatario" Binding="{Binding Destinatario}" Width="*" />
+                        <DataGridTextColumn Header="Ciudad"      Binding="{Binding CiudadDestino}" Width="100" />
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <Border Grid.Column="1" BorderBrush="#CCC" BorderThickness="1" Padding="10">
+                    <StackPanel>
+                        <TextBlock Text="Datos del pedido" FontWeight="Bold" Margin="0,0,0,8" />
+
+                        <TextBlock Text="ClienteID" />
+                        <TextBox Text="{Binding Edicion.ClienteID, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <TextBlock Text="EmpleadoID" Margin="0,6,0,0" />
+                        <TextBox Text="{Binding Edicion.EmpleadoID, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <TextBlock Text="TransportistaID" Margin="0,6,0,0" />
+                        <TextBox Text="{Binding Edicion.TransportistaID, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <TextBlock Text="Fecha pedido *" Margin="0,6,0,0" />
+                        <DatePicker SelectedDate="{Binding Edicion.FechaPedido}" />
+
+                        <TextBlock Text="Fecha requerida" Margin="0,6,0,0" />
+                        <DatePicker SelectedDate="{Binding Edicion.FechaRequerida}" />
+
+                        <TextBlock Text="Fecha envío" Margin="0,6,0,0" />
+                        <DatePicker SelectedDate="{Binding Edicion.FechaEnvio}" />
+
+                        <TextBlock Text="Destinatario" Margin="0,6,0,0" />
+                        <TextBox Text="{Binding Edicion.Destinatario, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <TextBlock Text="Ciudad destino" Margin="0,6,0,0" />
+                        <TextBox Text="{Binding Edicion.CiudadDestino, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <TextBlock Text="País destino" Margin="0,6,0,0" />
+                        <TextBox Text="{Binding Edicion.PaisDestino, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <Border Grid.Row="3" Background="#EEE" Padding="6" Margin="0,8,0,0">
+                <TextBlock Text="{Binding MensajeEstado}" TextWrapping="Wrap" />
+            </Border>
+
+            <!-- ===== Sección de Reporte ===== -->
+            <Border Grid.Row="4" BorderBrush="#999" BorderThickness="1" Padding="10" Margin="0,12,0,0">
+                <StackPanel>
+                    <TextBlock Text="Reporte: Detalle de pedidos por fechas"
+                               FontSize="15" FontWeight="Bold" Margin="0,0,0,8" />
+
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock Text="Fecha inicio:" VerticalAlignment="Center" Margin="0,0,4,0" />
+                        <DatePicker SelectedDate="{Binding ReporteInicio}" Margin="0,0,12,0" />
+
+                        <TextBlock Text="Fecha fin:" VerticalAlignment="Center" Margin="0,0,4,0" />
+                        <DatePicker SelectedDate="{Binding ReporteFin}" Margin="0,0,12,0" />
+
+                        <Button Content="Generar Reporte"
+                                Command="{Binding GenerarReporteCommand}" Padding="10,4" />
+                    </StackPanel>
+
+                    <DataGrid ItemsSource="{Binding Reporte}"
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True"
+                              Height="220">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Pedido"      Binding="{Binding PedidoID}" Width="55" />
+                            <DataGridTextColumn Header="Fecha"       Binding="{Binding FechaPedido, StringFormat=d}" Width="90" />
+                            <DataGridTextColumn Header="Destinatario" Binding="{Binding Destinatario}" Width="140" />
+                            <DataGridTextColumn Header="Ciudad"      Binding="{Binding CiudadDestino}" Width="90" />
+                            <DataGridTextColumn Header="País"        Binding="{Binding PaisDestino}" Width="80" />
+                            <DataGridTextColumn Header="Producto"    Binding="{Binding NombreProducto}" Width="*" />
+                            <DataGridTextColumn Header="P. Unit."    Binding="{Binding PrecioUnidad, StringFormat=N2}" Width="70" />
+                            <DataGridTextColumn Header="Cant."       Binding="{Binding Cantidad}" Width="50" />
+                            <DataGridTextColumn Header="Desc."       Binding="{Binding Descuento, StringFormat=P0}" Width="55" />
+                            <DataGridTextColumn Header="SubTotal"    Binding="{Binding SubTotal, StringFormat=N2}" Width="80" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Border Background="#EEE" Padding="6" Margin="0,8,0,0">
+                        <TextBlock Text="{Binding MensajeEstadoReporte}" TextWrapping="Wrap" />
+                    </Border>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </ScrollViewer>
+</UserControl>
